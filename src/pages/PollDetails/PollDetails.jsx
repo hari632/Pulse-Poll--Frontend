@@ -51,9 +51,9 @@ function PollDetails() {
         // Initial poll data
         setPoll(data);
 
-        // -----------------------------------------
+        // =========================================
         // REALTIME LIVE RESULTS
-        // -----------------------------------------
+        // =========================================
         unsubscribe = pollApi.subscribeToResults(
           pollId,
           (update) => {
@@ -69,10 +69,34 @@ function PollDetails() {
               return;
             }
 
-            // Update poll without changing the existing UI
+            // =========================================
+            // UPDATE LIVE POLL DATA
+            // =========================================
             setPoll((currentPoll) => ({
               ...(currentPoll || {}),
               ...updatedPoll,
+
+              // Live vote data
+              votes:
+                updatedPoll.votes ??
+                currentPoll?.votes,
+
+              totalVotes:
+                updatedPoll.totalVotes ??
+                currentPoll?.totalVotes,
+
+              percentages:
+                updatedPoll.percentages ??
+                currentPoll?.percentages,
+
+              // Live activity data
+              peakActivity:
+                updatedPoll.peakActivity ??
+                currentPoll?.peakActivity,
+
+              activity:
+                updatedPoll.activity ??
+                currentPoll?.activity,
             }));
           }
         );
@@ -99,6 +123,9 @@ function PollDetails() {
   const currentQuestion =
     poll?.question || DEFAULT_POLL.question;
 
+  // =========================================
+  // LIVE TOTAL VOTES
+  // =========================================
   const currentTotalVotes =
     poll?.totalVotes ??
     (Array.isArray(poll?.votes)
@@ -117,23 +144,31 @@ function PollDetails() {
     "purple",
   ];
 
+  // =========================================
+  // LIVE OPTIONS + PERCENTAGES
+  // =========================================
   const currentOptions =
     Array.isArray(poll?.options) &&
     poll.options.length > 0
       ? poll.options.map((label, index) => {
-          const voteCount = poll.votes?.[index] || 0;
+          const voteCount =
+            poll.votes?.[index] || 0;
 
           const percentage =
-            currentTotalVotes > 0
-              ? Math.round(
-                  (voteCount / currentTotalVotes) * 100
-                )
-              : 0;
+            Array.isArray(poll?.percentages) &&
+            poll.percentages[index] != null
+              ? poll.percentages[index]
+              : currentTotalVotes > 0
+                ? Math.round(
+                    (voteCount / currentTotalVotes) * 100
+                  )
+                : 0;
 
           return {
             label,
             percentage,
-            color: colors[index % colors.length],
+            color:
+              colors[index % colors.length],
           };
         })
       : DEFAULT_POLL.options;
