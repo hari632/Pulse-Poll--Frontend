@@ -15,8 +15,7 @@ function Landing() {
         </Link>
 
         <div className="navbar__links">
-          <a href="#features">Features</a>
-          <a href="#how-it-works">How it works</a>
+          
           <Link to="/login" className="navbar__signin">
             Sign in
           </Link>

@@ -4,17 +4,28 @@ import "./PollDetails.css";
 import { pollApi } from "../../services/api";
 
 const DEFAULT_POLL = {
-  question: "What’s your favorite stack?",
-  totalVotes: 1284,
-  peakActivity: "8:42 PM",
-  activity: "+124 votes in the last hour",
-  options: [
-    { label: "React", percentage: 46, color: "coral" },
-    { label: "Vue", percentage: 28, color: "coral" },
-    { label: "Angular", percentage: 16, color: "purple" },
-    { label: "Svelte", percentage: 10, color: "yellow" },
-  ],
+  question: "Loading poll...",
+  totalVotes: 0,
+  peakActivity: "No activity yet",
+  activity: "No votes yet",
+  options: [],
 };
+
+function formatPeakTime(timeVal) {
+  if (!timeVal || timeVal === "No activity yet") {
+    return "No activity yet";
+  }
+
+  const date = new Date(timeVal);
+  if (!isNaN(date.getTime()) && (timeVal.includes("T") || timeVal.includes("-"))) {
+    return date.toLocaleTimeString([], {
+      hour: "numeric",
+      minute: "2-digit",
+    });
+  }
+
+  return timeVal;
+}
 
 function PollDetails() {
   const navigate = useNavigate();
@@ -64,45 +75,24 @@ function PollDetails() {
             ...updatedPoll,
           };
 
-          /*
-           * Keep existing values if a realtime event
-           * does not contain one of them.
-           */
-          if (
-            updatedPoll.votes == null &&
-            currentPoll?.votes != null
-          ) {
-            nextPoll.votes = currentPoll.votes;
+          if (updatedPoll.peakActivity) {
+            nextPoll.peakActivity = updatedPoll.peakActivity;
           }
 
-          if (
-            updatedPoll.totalVotes == null &&
-            currentPoll?.totalVotes != null
-          ) {
-            nextPoll.totalVotes = currentPoll.totalVotes;
+          if (updatedPoll.activity) {
+            nextPoll.activity = updatedPoll.activity;
           }
 
-          if (
-            updatedPoll.percentages == null &&
-            currentPoll?.percentages != null
-          ) {
-            nextPoll.percentages =
-              currentPoll.percentages;
+          if (updatedPoll.totalVotes != null) {
+            nextPoll.totalVotes = updatedPoll.totalVotes;
           }
 
-          if (
-            updatedPoll.peakActivity == null &&
-            currentPoll?.peakActivity != null
-          ) {
-            nextPoll.peakActivity =
-              currentPoll.peakActivity;
+          if (Array.isArray(updatedPoll.votes)) {
+            nextPoll.votes = updatedPoll.votes;
           }
 
-          if (
-            updatedPoll.activity == null &&
-            currentPoll?.activity != null
-          ) {
-            nextPoll.activity = currentPoll.activity;
+          if (Array.isArray(updatedPoll.percentages)) {
+            nextPoll.percentages = updatedPoll.percentages;
           }
 
           return nextPoll;
@@ -172,7 +162,7 @@ function PollDetails() {
           (sum, count) => sum + count,
           0
         )
-      : DEFAULT_POLL.totalVotes);
+      : 0);
 
   const colors = [
     "coral",
@@ -186,7 +176,12 @@ function PollDetails() {
   const currentOptions =
     Array.isArray(poll?.options) &&
     poll.options.length > 0
-      ? poll.options.map((label, index) => {
+      ? poll.options.map((optionItem, index) => {
+          const label =
+            typeof optionItem === "string"
+              ? optionItem
+              : optionItem?.text || optionItem?.label || `Option ${index + 1}`;
+
           const voteCount =
             poll.votes?.[index] || 0;
 
@@ -207,7 +202,7 @@ function PollDetails() {
               colors[index % colors.length],
           };
         })
-      : DEFAULT_POLL.options;
+      : [];
 
   const pollLink =
     `${window.location.origin}/poll/${code}`;
@@ -388,8 +383,7 @@ function PollDetails() {
 
             <div className="poll-details__stat">
               <strong>
-                {poll?.peakActivity ||
-                  DEFAULT_POLL.peakActivity}
+                {formatPeakTime(poll?.peakActivity)}
               </strong>
 
               <span>PEAK ACTIVITY</span>
@@ -403,8 +397,7 @@ function PollDetails() {
             <strong>Activity</strong>
 
             <span>
-              {poll?.activity ||
-                DEFAULT_POLL.activity}
+              {poll?.activity || "No votes yet"}
             </span>
           </div>
         </article>

@@ -101,7 +101,11 @@ function AppRoutes() {
 
         <Route
           path="/poll-details/:pollId"
-          element={<PollDetails />}
+          element={
+            <ProtectedRoute>
+              <PollDetails />
+            </ProtectedRoute>
+          }
         />
 
         <Route

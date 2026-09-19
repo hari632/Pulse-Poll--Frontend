@@ -54,6 +54,10 @@ function MyPolls() {
     });
   }, [polls, activeFilter, search]);
 
+  const activeOrLatestPoll = useMemo(() => {
+    return polls.find((p) => p.status === "active") || polls[0] || null;
+  }, [polls]);
+
   function getCardColor(poll, index) {
     if (poll.status === "active") {
       return "coral";
@@ -92,7 +96,11 @@ function MyPolls() {
       return "Edit draft →";
     }
 
-    return "View results →";
+    if (poll.status === "closed") {
+      return "View results →";
+    }
+
+    return "Manage poll →";
   }
 
   function handlePollAction(poll) {
@@ -101,7 +109,16 @@ function MyPolls() {
       return;
     }
 
-    navigate(`/results/${poll.id}`, {
+    if (poll.status === "closed") {
+      navigate(`/results/${poll.id}`, {
+        state: {
+          question: poll.question,
+        },
+      });
+      return;
+    }
+
+    navigate(`/poll-details/${poll.id}`, {
       state: {
         question: poll.question,
       },
@@ -134,7 +151,15 @@ function MyPolls() {
             My polls
           </Link>
 
-          <Link to="/results/demo">Analytics</Link>
+          <Link
+            to={
+              activeOrLatestPoll
+                ? `/poll-details/${activeOrLatestPoll.id}`
+                : "/create"
+            }
+          >
+            Analytics
+          </Link>
 
           <Link to="/settings">Settings</Link>
 

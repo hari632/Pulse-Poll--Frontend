@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "./Settings.css";
-import { authApi } from "../../services/api";
+import { authApi, pollApi } from "../../services/api";
 
 const DEFAULT_PROFILE = {
   name: "PulsePoll Host",
@@ -23,9 +23,10 @@ function Settings() {
   const [weeklyRecap, setWeeklyRecap] = useState(false);
 
   const [message, setMessage] = useState("");
+  const [targetPollId, setTargetPollId] = useState(null);
 
   useEffect(() => {
-    async function loadUser() {
+    async function loadData() {
       try {
         const u = await authApi.getMe();
         if (u) {
@@ -35,8 +36,18 @@ function Settings() {
       } catch {
         // Keep current state
       }
+
+      try {
+        const polls = await pollApi.getMyPolls();
+        if (Array.isArray(polls) && polls.length > 0) {
+          const active = polls.find((p) => p.status === "active") || polls[0];
+          setTargetPollId(active.id);
+        }
+      } catch {
+        // Keep current state
+      }
     }
-    loadUser();
+    loadData();
   }, []);
 
   function handleEditProfile() {
@@ -106,7 +117,15 @@ function Settings() {
         <nav className="settings-page__nav">
           <Link to="/mypolls">My polls</Link>
 
-          <Link to="/results/demo">Analytics</Link>
+          <Link
+            to={
+              targetPollId
+                ? `/poll-details/${targetPollId}`
+                : "/mypolls"
+            }
+          >
+            Analytics
+          </Link>
 
           <Link
             to="/settings"
