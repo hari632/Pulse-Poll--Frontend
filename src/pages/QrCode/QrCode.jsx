@@ -1,5 +1,6 @@
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
+import { QRCodeSVG } from "qrcode.react";
 import "./QrCode.css";
 
 const POLL = {
@@ -13,62 +14,6 @@ const POLL = {
     ["Angular", 9],
   ],
 };
-
-function Finder({ className = "" }) {
-  return (
-    <div className={`qr-finder ${className}`}>
-      <span />
-    </div>
-  );
-}
-
-function QrPattern() {
-  const modules = useMemo(() => {
-    const size = 21;
-    const cells = [];
-
-    // Deterministic visual QR-like pattern.
-    for (let row = 0; row < size; row += 1) {
-      for (let col = 0; col < size; col += 1) {
-        const finderZone =
-          (row < 7 && col < 7) ||
-          (row < 7 && col >= 14) ||
-          (row >= 14 && col < 7);
-
-        if (finderZone) continue;
-
-        const filled =
-          ((row * 7 + col * 11 + row * col) % 5 === 0) ||
-          ((row + col * 3) % 7 === 0) ||
-          ((row * 13 + col) % 11 === 0);
-
-        if (filled) {
-          cells.push(
-            <i
-              key={`${row}-${col}`}
-              style={{
-                gridRow: row + 1,
-                gridColumn: col + 1,
-              }}
-            />,
-          );
-        }
-      }
-    }
-
-    return cells;
-  }, []);
-
-  return (
-    <div className="qr-code">
-      <Finder className="qr-finder--tl" />
-      <Finder className="qr-finder--tr" />
-      <Finder className="qr-finder--bl" />
-
-      {modules}
-    </div>
-  );
-}
 
 function QrCode() {
   const { pollId } = useParams();
@@ -148,7 +93,16 @@ function QrCode() {
           <div className="qr-page__qr-wrap">
             <div className="qr-page__qr-glow" />
 
-            <QrPattern />
+            <div className="qr-code">
+              <QRCodeSVG
+                value={voteUrl}
+                size={360}
+                bgColor="#ffffff"
+                fgColor="#211a1d"
+                level="H"
+                includeMargin={true}
+              />
+            </div>
 
             <div className="qr-page__scan-line" />
           </div>
