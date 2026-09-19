@@ -27,16 +27,101 @@ function PollDetails() {
   const code = pollId?.toUpperCase() || "PULSE7";
 
   useEffect(() => {
+    if (!pollId) return undefined;
+
     let isMounted = true;
     let unsubscribe = () => {};
 
-    async function loadPoll() {
-      if (!pollId) return;
+    /*
+     * --------------------------------------------------
+     * REALTIME WEBSOCKET
+     * --------------------------------------------------
+     *
+     * Start the WebSocket immediately.
+     * It should not depend on the REST API request finishing.
+     */
+    unsubscribe = pollApi.subscribeToResults(
+      pollId,
+      (update) => {
+        if (!isMounted || !update) {
+          return;
+        }
 
+        const updatedPoll = update?.poll || update;
+
+        if (!updatedPoll) {
+          return;
+        }
+
+        if (updatedPoll.status === "closed") {
+          navigate(`/poll-closed/${code}`);
+          return;
+        }
+
+        setPoll((currentPoll) => {
+          const nextPoll = {
+            ...(currentPoll || {}),
+            ...updatedPoll,
+          };
+
+          /*
+           * Keep existing values if a realtime event
+           * does not contain one of them.
+           */
+          if (
+            updatedPoll.votes == null &&
+            currentPoll?.votes != null
+          ) {
+            nextPoll.votes = currentPoll.votes;
+          }
+
+          if (
+            updatedPoll.totalVotes == null &&
+            currentPoll?.totalVotes != null
+          ) {
+            nextPoll.totalVotes = currentPoll.totalVotes;
+          }
+
+          if (
+            updatedPoll.percentages == null &&
+            currentPoll?.percentages != null
+          ) {
+            nextPoll.percentages =
+              currentPoll.percentages;
+          }
+
+          if (
+            updatedPoll.peakActivity == null &&
+            currentPoll?.peakActivity != null
+          ) {
+            nextPoll.peakActivity =
+              currentPoll.peakActivity;
+          }
+
+          if (
+            updatedPoll.activity == null &&
+            currentPoll?.activity != null
+          ) {
+            nextPoll.activity = currentPoll.activity;
+          }
+
+          return nextPoll;
+        });
+      }
+    );
+
+    /*
+     * --------------------------------------------------
+     * INITIAL REST DATA
+     * --------------------------------------------------
+     */
+    async function loadPoll() {
       try {
         const data = await pollApi.getPoll(pollId);
 
-        if (!isMounted) return;
+        if (!isMounted) {
+          return;
+        }
 
         if (!data) {
           navigate("/poll-not-found");
@@ -48,60 +133,11 @@ function PollDetails() {
           return;
         }
 
-        // Initial poll data
         setPoll(data);
-
-        // =========================================
-        // REALTIME LIVE RESULTS
-        // =========================================
-        unsubscribe = pollApi.subscribeToResults(
-          pollId,
-          (update) => {
-            if (!isMounted) return;
-
-            const updatedPoll = update?.poll || update;
-
-            if (!updatedPoll) return;
-
-            // If poll is closed while watching
-            if (updatedPoll.status === "closed") {
-              navigate(`/poll-closed/${code}`);
-              return;
-            }
-
-            // =========================================
-            // UPDATE LIVE POLL DATA
-            // =========================================
-            setPoll((currentPoll) => ({
-              ...(currentPoll || {}),
-              ...updatedPoll,
-
-              // Live vote data
-              votes:
-                updatedPoll.votes ??
-                currentPoll?.votes,
-
-              totalVotes:
-                updatedPoll.totalVotes ??
-                currentPoll?.totalVotes,
-
-              percentages:
-                updatedPoll.percentages ??
-                currentPoll?.percentages,
-
-              // Live activity data
-              peakActivity:
-                updatedPoll.peakActivity ??
-                currentPoll?.peakActivity,
-
-              activity:
-                updatedPoll.activity ??
-                currentPoll?.activity,
-            }));
-          }
-        );
       } catch (err) {
-        if (!isMounted) return;
+        if (!isMounted) {
+          return;
+        }
 
         if (
           err?.status === 404 ||
@@ -114,18 +150,21 @@ function PollDetails() {
 
     loadPoll();
 
+    /*
+     * --------------------------------------------------
+     * CLEANUP
+     * --------------------------------------------------
+     */
     return () => {
       isMounted = false;
       unsubscribe();
+      unsubscribe = () => {};
     };
   }, [pollId, code, navigate]);
 
   const currentQuestion =
     poll?.question || DEFAULT_POLL.question;
 
-  // =========================================
-  // LIVE TOTAL VOTES
-  // =========================================
   const currentTotalVotes =
     poll?.totalVotes ??
     (Array.isArray(poll?.votes)
@@ -144,9 +183,6 @@ function PollDetails() {
     "purple",
   ];
 
-  // =========================================
-  // LIVE OPTIONS + PERCENTAGES
-  // =========================================
   const currentOptions =
     Array.isArray(poll?.options) &&
     poll.options.length > 0
@@ -174,11 +210,13 @@ function PollDetails() {
       : DEFAULT_POLL.options;
 
   const pollLink =
-    `${window.location.origin}/poll-details/${code}`;
+    `${window.location.origin}/poll/${code}`;
 
   async function handleCopy() {
     try {
-      await navigator.clipboard.writeText(pollLink);
+      await navigator.clipboard.writeText(
+        pollLink
+      );
     } catch {}
 
     setCopied(true);
@@ -194,15 +232,15 @@ function PollDetails() {
   }
 
   async function handleClosePoll() {
-    setClosed(true);
-
     try {
+      setClosed(true);
       await pollApi.closePoll(code);
-    } catch {}
-
-    window.setTimeout(() => {
-      navigate(`/poll-closed/${code}`);
-    }, 700);
+      window.setTimeout(() => {
+        navigate(`/poll-closed/${code}`);
+      }, 700);
+    } catch {
+      setClosed(false);
+    }
   }
 
   return (
@@ -268,7 +306,8 @@ function PollDetails() {
 
         <div className="poll-details__status">
           <span>
-            ●&nbsp; {closed ? "CLOSING..." : "LIVE NOW"}
+            ●&nbsp;{" "}
+            {closed ? "CLOSING..." : "LIVE NOW"}
           </span>
 
           <strong>

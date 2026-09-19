@@ -391,9 +391,20 @@ function Vote() {
           ◉ PULSEPOLL
         </Link>
 
-        <div className="vote-navbar__live">
-          <span className="vote-navbar__dot" />
-          LIVE NOW
+        <div className="vote-navbar__right">
+          <div className="vote-navbar__live">
+            <span className="vote-navbar__dot" />
+            LIVE NOW
+          </div>
+
+          <button
+            type="button"
+            className="vote-navbar__exit"
+            onClick={() => navigate("/")}
+            aria-label="Exit poll"
+          >
+            ✕ Exit
+          </button>
         </div>
       </header>
 

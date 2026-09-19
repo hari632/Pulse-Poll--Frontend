@@ -78,6 +78,44 @@
   animation: livePulse 1.5s ease-in-out infinite;
 }
 
+.vote-navbar__right {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.vote-navbar__exit {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 6px 14px;
+
+  background: #fff0f3;
+  color: #ff4f70;
+
+  border: 1px solid #ffd2d9;
+  border-radius: 999px;
+
+  font-size: 13px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease,
+    transform 0.15s ease;
+}
+
+.vote-navbar__exit:hover {
+  background: #ff4f70;
+  color: #ffffff;
+  border-color: #ff4f70;
+  transform: translateY(-1px);
+}
+
 /* =========================================================
    INTRO
    ========================================================= */

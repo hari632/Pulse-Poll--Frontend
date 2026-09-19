@@ -106,7 +106,7 @@ function AppRoutes() {
 
         <Route
           path="/p/:pollId"
-          element={<PollDetails />}
+          element={<Vote />}
         />
 
         {/* =========================================

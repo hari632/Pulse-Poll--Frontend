@@ -22,7 +22,7 @@ function QrCode() {
   const code = pollId?.toUpperCase() || POLL.code;
   const [copied, setCopied] = useState(false);
 
-  const voteUrl = `${window.location.origin}/poll-details/${code}`;
+  const voteUrl = `${window.location.origin}/poll/${code}`;
 
   async function copyLink() {
     try {
@@ -39,7 +39,7 @@ function QrCode() {
   }
 
   function openPoll() {
-    navigate(`/poll-details/${code}`);
+    navigate(`/poll/${code}`);
   }
 
   return (

@@ -135,7 +135,7 @@ function Results() {
   }, [pollId]);
 
   const shareUrl =
-    `${window.location.origin}/poll-details/${pollId || "7K4Q"}`;
+    `${window.location.origin}/poll/${pollId || "7K4Q"}`;
 
   async function handleCopy() {
     try {

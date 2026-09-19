@@ -47,8 +47,8 @@ function PollSharing() {
       ? poll.votes.reduce((sum, count) => sum + count, 0)
       : DEFAULT_POLL.votes);
 
-  const pollLink = `${window.location.host}/poll-details/${code}`;
-  const shareUrl = `${window.location.origin}/poll-details/${code}`;
+  const pollLink = `${window.location.host}/poll/${code}`;
+  const shareUrl = `${window.location.origin}/poll/${code}`;
 
   async function handleCopy() {
     try {
