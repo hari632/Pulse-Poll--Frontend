@@ -9,26 +9,10 @@ const DEFAULT_POLL = {
   peakActivity: "8:42 PM",
   activity: "+124 votes in the last hour",
   options: [
-    {
-      label: "React",
-      percentage: 46,
-      color: "coral",
-    },
-    {
-      label: "Vue",
-      percentage: 28,
-      color: "coral",
-    },
-    {
-      label: "Angular",
-      percentage: 16,
-      color: "purple",
-    },
-    {
-      label: "Svelte",
-      percentage: 10,
-      color: "yellow",
-    },
+    { label: "React", percentage: 46, color: "coral" },
+    { label: "Vue", percentage: 28, color: "coral" },
+    { label: "Angular", percentage: 16, color: "purple" },
+    { label: "Svelte", percentage: 10, color: "yellow" },
   ],
 };
 
@@ -44,49 +28,104 @@ function PollDetails() {
 
   useEffect(() => {
     let isMounted = true;
+    let unsubscribe = () => {};
+
     async function loadPoll() {
       if (!pollId) return;
+
       try {
         const data = await pollApi.getPoll(pollId);
+
         if (!isMounted) return;
+
         if (!data) {
           navigate("/poll-not-found");
           return;
         }
+
         if (data.status === "closed") {
           navigate(`/poll-closed/${code}`);
           return;
         }
+
         setPoll(data);
+
+        // -----------------------------------------
+        // REALTIME POLL UPDATES
+        // -----------------------------------------
+        unsubscribe = pollApi.subscribeToResults(pollId, (update) => {
+          if (!isMounted) return;
+
+          const updatedPoll = update?.poll || update;
+
+          if (!updatedPoll) return;
+
+          // If the poll was closed while we are watching it
+          if (updatedPoll.status === "closed") {
+            navigate(`/poll-closed/${code}`);
+            return;
+          }
+
+          // Update the poll state with the latest vote data
+          setPoll((currentPoll) => ({
+            ...(currentPoll || {}),
+            ...updatedPoll,
+          }));
+        });
       } catch (err) {
         if (!isMounted) return;
-        if (err?.status === 404 || err?.message?.includes("not found")) {
+
+        if (
+          err?.status === 404 ||
+          err?.message?.includes("not found")
+        ) {
           navigate("/poll-not-found");
         }
       }
     }
+
     loadPoll();
+
     return () => {
       isMounted = false;
+      unsubscribe();
     };
   }, [pollId, code, navigate]);
 
-  const currentQuestion = poll?.question || DEFAULT_POLL.question;
+  const currentQuestion =
+    poll?.question || DEFAULT_POLL.question;
+
   const currentTotalVotes =
     poll?.totalVotes ??
     (Array.isArray(poll?.votes)
-      ? poll.votes.reduce((sum, count) => sum + count, 0)
+      ? poll.votes.reduce(
+          (sum, count) => sum + count,
+          0
+        )
       : DEFAULT_POLL.totalVotes);
 
-  const colors = ["coral", "coral", "purple", "yellow", "coral", "purple"];
+  const colors = [
+    "coral",
+    "coral",
+    "purple",
+    "yellow",
+    "coral",
+    "purple",
+  ];
+
   const currentOptions =
-    Array.isArray(poll?.options) && poll.options.length > 0
+    Array.isArray(poll?.options) &&
+    poll.options.length > 0
       ? poll.options.map((label, index) => {
           const voteCount = poll.votes?.[index] || 0;
+
           const percentage =
             currentTotalVotes > 0
-              ? Math.round((voteCount / currentTotalVotes) * 100)
+              ? Math.round(
+                  (voteCount / currentTotalVotes) * 100
+                )
               : 0;
+
           return {
             label,
             percentage,
@@ -100,15 +139,14 @@ function PollDetails() {
   async function handleCopy() {
     try {
       await navigator.clipboard.writeText(pollLink);
-    } catch {
-      // Clipboard unavailable.
-    }
+    } catch {}
 
     setCopied(true);
 
-    window.setTimeout(() => {
-      setCopied(false);
-    }, 1800);
+    window.setTimeout(
+      () => setCopied(false),
+      1800
+    );
   }
 
   function handleVote() {
@@ -117,11 +155,10 @@ function PollDetails() {
 
   async function handleClosePoll() {
     setClosed(true);
+
     try {
       await pollApi.closePoll(code);
-    } catch {
-      // Ignore
-    }
+    } catch {}
 
     window.setTimeout(() => {
       navigate(`/poll-closed/${code}`);
@@ -130,59 +167,6 @@ function PollDetails() {
 
   return (
     <main className="poll-details">
-      {/* =========================================
-          DECORATIVE SHAPES
-      ========================================= */}
-
-      <div
-        className="poll-details__blob poll-details__blob--coral"
-        aria-hidden="true"
-      />
-
-      <div
-        className="poll-details__blob poll-details__blob--purple"
-        aria-hidden="true"
-      />
-
-      <div
-        className="poll-details__blob poll-details__blob--peach"
-        aria-hidden="true"
-      />
-
-      {/* =========================================
-          NAVBAR
-      ========================================= */}
-
-      <header className="poll-details__navbar">
-        <Link to="/" className="poll-details__brand">
-          ◉ PULSEPOLL
-        </Link>
-
-        <nav>
-          <Link
-            to="/mypolls"
-            className="poll-details__active-link"
-          >
-            My polls
-          </Link>
-
-          <Link to="/archive">
-            Archive
-          </Link>
-
-          <Link
-            to={`/poll/${code}`}
-            className="poll-details__create"
-          >
-            Vote now →
-          </Link>
-        </nav>
-      </header>
-
-      {/* =========================================
-          HEADER
-      ========================================= */}
-
       <section className="poll-details__header">
         <div>
           <p className="poll-details__eyebrow">
@@ -207,135 +191,81 @@ function PollDetails() {
         </div>
       </section>
 
-      {/* =========================================
-          DASHBOARD
-      ========================================= */}
+      <article className="poll-details__results-card">
+        <div className="poll-details__card-heading">
+          <p>LIVE RESULTS</p>
 
-      <section className="poll-details__dashboard">
-        {/* =========================================
-            RESULTS CARD
-        ========================================= */}
+          <h2>{currentQuestion}</h2>
 
-        <article className="poll-details__results-card">
-          <div className="poll-details__card-heading">
-            <p>LIVE RESULTS</p>
+          <span>Updated just now</span>
+        </div>
 
-            <h2>{currentQuestion}</h2>
+        <div className="poll-details__results">
+          {currentOptions.map((option, index) => (
+            <div
+              className="poll-details__result"
+              key={option.label}
+              onClick={handleVote}
+              style={{
+                "--result-delay": `${index * 120}ms`,
+                cursor: "pointer",
+              }}
+            >
+              <div className="poll-details__result-label">
+                <strong>{option.label}</strong>
 
-            <span>Updated just now</span>
-          </div>
-
-          <div className="poll-details__results">
-            {currentOptions.map((option, index) => (
-              <div
-                className="poll-details__result"
-                key={option.label}
-                onClick={handleVote}
-                style={{
-                  "--result-delay": `${index * 120}ms`,
-                  cursor: "pointer",
-                }}
-              >
-                <div className="poll-details__result-label">
-                  <strong>{option.label}</strong>
-
-                  <span>{option.percentage}%</span>
-                </div>
-
-                <div className="poll-details__track">
-                  <i
-                    className={`poll-details__fill poll-details__fill--${option.color}`}
-                    style={{
-                      width: `${option.percentage}%`,
-                    }}
-                  />
-                </div>
+                <span>{option.percentage}%</span>
               </div>
-            ))}
-          </div>
-        </article>
 
-        {/* =========================================
-            STATS CARD
-        ========================================= */}
-
-        <article className="poll-details__stats-card">
-          <p className="poll-details__card-label">
-            AT A GLANCE
-          </p>
-
-          <div className="poll-details__stats">
-            <div className="poll-details__stat">
-              <strong>
-                {currentTotalVotes.toLocaleString()}
-              </strong>
-
-              <span>TOTAL VOTES</span>
+              <div className="poll-details__track">
+                <i
+                  className={`poll-details__fill poll-details__fill--${option.color}`}
+                  style={{
+                    width: `${option.percentage}%`,
+                  }}
+                />
+              </div>
             </div>
+          ))}
+        </div>
+      </article>
 
-            <div className="poll-details__stat">
-              <strong>
-                {DEFAULT_POLL.peakActivity}
-              </strong>
+      <article className="poll-details__stats-card">
+        <div>
+          <strong>
+            {currentTotalVotes.toLocaleString()}
+          </strong>
 
-              <span>PEAK ACTIVITY</span>
-            </div>
-          </div>
+          <span>TOTAL VOTES</span>
+        </div>
 
-          <div className="poll-details__divider" />
+        <div>
+          <strong>
+            {poll?.peakActivity ||
+              DEFAULT_POLL.peakActivity}
+          </strong>
 
-          <div className="poll-details__activity">
-            <strong>Activity</strong>
+          <span>PEAK ACTIVITY</span>
+        </div>
 
-            <span>{DEFAULT_POLL.activity}</span>
-          </div>
-        </article>
+        <div>
+          <strong>
+            {poll?.activity ||
+              DEFAULT_POLL.activity}
+          </strong>
 
-        {/* =========================================
-            ACTIONS CARD
-        ========================================= */}
+          <span>ACTIVITY</span>
+        </div>
+      </article>
 
-        <article className="poll-details__actions-card">
-          <p className="poll-details__card-label">
-            SHARE &amp; MANAGE
-          </p>
-
-          <h2>Keep the conversation going.</h2>
-
-          <p className="poll-details__actions-description">
-            Share this live poll or close it when you’re ready.
-          </p>
-
-          <button
-            type="button"
-            className="poll-details__share-button"
-            onClick={handleVote}
-          >
-            Vote in this poll →
-          </button>
-
-          <div className="poll-details__secondary-actions">
-            <button
-              type="button"
-              className="poll-details__close-button"
-              onClick={handleClosePoll}
-              disabled={closed}
-            >
-              {closed ? "Closing..." : "Close poll"}
-            </button>
-
-            <button
-              type="button"
-              className="poll-details__copy-button"
-              onClick={handleCopy}
-            >
-              {copied ? "Copied ✓" : "Copy link"}
-            </button>
-          </div>
-        </article>
-      </section>
-
-      {/* Footer note */}
+      <button
+        type="button"
+        className="poll-details__close-button"
+        onClick={handleClosePoll}
+        disabled={closed}
+      >
+        {closed ? "Closing..." : "Close poll"}
+      </button>
 
       <p className="poll-details__footer">
         Results update automatically while your poll is live.
