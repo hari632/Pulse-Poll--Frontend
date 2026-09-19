@@ -1,0 +1,931 @@
+/* =====================================================
+   PULSEPOLL
+   RESULTS — CORAL POP
+   ===================================================== */
+
+.results-page {
+  position: relative;
+
+  min-height: 100vh;
+
+  padding: 28px 40px 60px;
+
+  overflow: hidden;
+
+  background: #fff6f7;
+
+  color: #211a1d;
+}
+
+/* =====================================================
+   DECORATIVE CIRCLES
+   ===================================================== */
+
+.results-decoration {
+  position: absolute;
+
+  pointer-events: none;
+
+  z-index: 0;
+
+  border-radius: 50%;
+}
+
+.results-decoration--coral {
+  width: 300px;
+  height: 300px;
+
+  top: -165px;
+  right: -20px;
+
+  background: #ff4f70;
+
+  animation:
+    decorationFloat 6s ease-in-out infinite;
+}
+
+.results-decoration--purple {
+  width: 240px;
+  height: 240px;
+
+  left: -125px;
+  bottom: -130px;
+
+  background: #6c63ff;
+
+  animation:
+    decorationFloatReverse 7s ease-in-out infinite;
+}
+
+/* =====================================================
+   NAVBAR
+   ===================================================== */
+
+.results-navbar {
+  position: relative;
+
+  z-index: 10;
+
+  width: 100%;
+  height: 76px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 0 28px;
+
+  background: #ffffff;
+
+  border-radius: 26px;
+
+  box-shadow:
+    0 12px 35px rgba(33, 26, 29, 0.06);
+
+  animation:
+    navbarEnter 0.65s ease-out both;
+}
+
+.results-navbar__brand {
+  color: #211a1d;
+
+  font-size: 20px;
+  font-weight: 800;
+
+  transition:
+    transform 0.2s ease,
+    opacity 0.2s ease;
+}
+
+.results-navbar__brand:hover {
+  transform: translateX(4px);
+
+  opacity: 0.7;
+}
+
+.results-navbar__links {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+}
+
+.results-navbar__active {
+  color: #ff4f70;
+
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.results-navbar__signin {
+  color: #211a1d;
+
+  font-size: 15px;
+  font-weight: 600;
+
+  transition: opacity 0.2s ease;
+}
+
+.results-navbar__signin:hover {
+  opacity: 0.55;
+}
+
+.results-navbar__create {
+  width: 118px;
+  height: 48px;
+
+  border: 0;
+  border-radius: 24px;
+
+  background: #ff4f70;
+  color: #ffffff;
+
+  font-size: 14px;
+  font-weight: 700;
+
+  cursor: pointer;
+
+  box-shadow:
+    0 8px 20px rgba(255, 79, 112, 0.2);
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.results-navbar__create:hover {
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 12px 25px rgba(255, 79, 112, 0.28);
+}
+
+.results-navbar__create:active {
+  transform: scale(0.96);
+}
+
+/* =====================================================
+   HEADER
+   ===================================================== */
+
+.results-header {
+  position: relative;
+
+  z-index: 1;
+
+  max-width: 860px;
+
+  margin: 64px auto 34px;
+
+  animation:
+    headerEnter 0.8s 0.1s
+    cubic-bezier(0.22, 1, 0.36, 1)
+    both;
+}
+
+.results-header__eyebrow {
+  margin: 0 0 12px;
+
+  color: #ff4f70;
+
+  font-size: 13px;
+  font-weight: 700;
+
+  letter-spacing: 0.1px;
+}
+
+.results-header h1 {
+  margin: 0;
+
+  color: #211a1d;
+
+  font-size: 44px;
+  line-height: 1.05;
+
+  font-weight: 800;
+
+  letter-spacing: -1.5px;
+}
+
+.results-header > p:last-child {
+  margin: 10px 0 0;
+
+  color: #211a1d;
+
+  font-size: 18px;
+  line-height: 1.4;
+}
+
+/* =====================================================
+   MAIN LAYOUT
+   ===================================================== */
+
+.results-layout {
+  position: relative;
+
+  z-index: 1;
+
+  width: min(1280px, 100%);
+
+  margin: 0 auto;
+
+  display: grid;
+
+  grid-template-columns:
+    minmax(0, 800px)
+    minmax(340px, 440px);
+
+  gap: 40px;
+
+  align-items: stretch;
+}
+
+/* =====================================================
+   RESULTS CARD
+   ===================================================== */
+
+.results-card {
+  min-height: 548px;
+
+  padding: 26px 32px 32px;
+
+  background: #ffffff;
+
+  border-radius: 28px;
+
+  box-shadow:
+    0 20px 55px rgba(33, 26, 29, 0.06);
+
+  animation:
+    resultsCardEnter 0.8s 0.25s
+    cubic-bezier(0.22, 1, 0.36, 1)
+    both;
+}
+
+.results-card__label {
+  margin: 0 0 16px;
+
+  color: #ff4f70;
+
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.results-card h2 {
+  margin: 0;
+
+  color: #211a1d;
+
+  font-size: 28px;
+  line-height: 1.2;
+
+  font-weight: 800;
+
+  letter-spacing: -0.7px;
+}
+
+.results-card__meta {
+  margin: 8px 0 28px;
+
+  color: #211a1d;
+
+  font-size: 14px;
+}
+
+.results-card__meta span {
+  margin: 0 5px;
+
+  color: #8f8589;
+}
+
+/* =====================================================
+   RESULT OPTIONS
+   ===================================================== */
+
+.results-options {
+  display: flex;
+  flex-direction: column;
+
+  gap: 8px;
+}
+
+.result-option {
+  padding: 9px 10px 11px;
+
+  border-radius: 16px;
+
+  transition:
+    background 0.25s ease,
+    transform 0.25s ease;
+}
+
+.result-option--selected {
+  background: #ffedf0;
+
+  animation:
+    selectedResultEnter 0.55s
+    cubic-bezier(0.22, 1, 0.36, 1)
+    both;
+}
+
+.result-option:hover {
+  transform: translateX(3px);
+}
+
+.result-option__top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  min-height: 25px;
+}
+
+.result-option__name {
+  color: #211a1d;
+
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.result-option__right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.result-option__voted {
+  color: #ff4f70;
+
+  font-size: 12px;
+  font-weight: 700;
+
+  animation:
+    votedPop 0.45s ease-out;
+}
+
+.result-option__percentage {
+  min-width: 42px;
+
+  color: #211a1d;
+
+  font-size: 16px;
+  font-weight: 700;
+
+  text-align: right;
+}
+
+.result-option--selected
+  .result-option__percentage {
+  color: #ff4f70;
+}
+
+.result-option__track {
+  width: 100%;
+  height: 10px;
+
+  margin-top: 7px;
+
+  overflow: hidden;
+
+  border-radius: 5px;
+
+  background: #f2edde;
+}
+
+.result-option__fill {
+  height: 100%;
+
+  border-radius: inherit;
+
+  background: #ff4f70;
+
+  transform-origin: left;
+
+  animation:
+    barGrow 1s
+    cubic-bezier(0.22, 1, 0.36, 1)
+    both;
+
+  transition:
+    width 0.8s
+    cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.result-option:nth-child(2)
+  .result-option__fill {
+  animation-delay: 0.08s;
+}
+
+.result-option:nth-child(3)
+  .result-option__fill {
+  background: #6c63ff;
+
+  animation-delay: 0.16s;
+}
+
+.result-option:nth-child(4)
+  .result-option__fill {
+  background: #b8e580;
+
+  animation-delay: 0.24s;
+}
+
+/* =====================================================
+   SHARE CARD
+   ===================================================== */
+
+.share-card {
+  min-height: 548px;
+
+  padding: 31px 32px;
+
+  background: #ffffff;
+
+  border-radius: 28px;
+
+  box-shadow:
+    0 20px 55px rgba(33, 26, 29, 0.06);
+
+  animation:
+    shareCardEnter 0.8s 0.4s
+    cubic-bezier(0.22, 1, 0.36, 1)
+    both;
+}
+
+.share-card__eyebrow {
+  margin: 0 0 18px;
+
+  color: #6c63ff;
+
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.share-card h2 {
+  margin: 0;
+
+  color: #211a1d;
+
+  font-size: 30px;
+  line-height: 1.12;
+
+  font-weight: 800;
+
+  letter-spacing: -0.8px;
+}
+
+.share-card__description {
+  margin: 20px 0 25px;
+
+  color: #211a1d;
+
+  font-size: 16px;
+  line-height: 1.4;
+}
+
+/* =====================================================
+   SHARE LINK
+   ===================================================== */
+
+.share-link {
+  width: 100%;
+  height: 58px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding-left: 18px;
+  padding-right: 10px;
+
+  border-radius: 16px;
+
+  background: #ffffff;
+
+  box-shadow:
+    inset 0 0 0 1px #f0e9eb;
+}
+
+.share-link span {
+  overflow: hidden;
+
+  color: #211a1d;
+
+  font-size: 15px;
+  font-weight: 600;
+
+  text-overflow: ellipsis;
+
+  white-space: nowrap;
+}
+
+.share-link button {
+  width: 68px;
+  height: 42px;
+
+  flex-shrink: 0;
+
+  border: 0;
+  border-radius: 21px;
+
+  background: #ff4f70;
+  color: #ffffff;
+
+  font-size: 13px;
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition:
+    transform 0.2s ease,
+    background 0.2s ease;
+}
+
+.share-link button:hover {
+  transform: scale(1.05);
+}
+
+.share-link button:active {
+  transform: scale(0.94);
+}
+
+/* =====================================================
+   SHARE BUTTON
+   ===================================================== */
+
+.share-card__share,
+.share-card__new {
+  width: 100%;
+  height: 56px;
+
+  border: 0;
+  border-radius: 28px;
+
+  font-size: 15px;
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.share-card__share {
+  margin-top: 26px;
+
+  background: #ff4f70;
+  color: #ffffff;
+
+  box-shadow:
+    0 10px 25px rgba(255, 79, 112, 0.16);
+}
+
+.share-card__share:hover {
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 15px 30px rgba(255, 79, 112, 0.24);
+}
+
+.share-card__share:active {
+  transform: scale(0.97);
+}
+
+.share-card__share:disabled {
+  opacity: 0.65;
+
+  cursor: wait;
+}
+
+/* =====================================================
+   NEW POLL
+   ===================================================== */
+
+.share-card__new {
+  margin-top: 14px;
+
+  background: #ff4f70;
+  color: #6c63ff;
+
+  border: 1px solid #b8e81f;
+
+  box-shadow:
+    0 8px 20px rgba(255, 79, 112, 0.1);
+}
+
+.share-card__new:hover {
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 12px 25px rgba(255, 79, 112, 0.18);
+}
+
+.share-card__new:active {
+  transform: scale(0.97);
+}
+
+/* =====================================================
+   SHARE FOOTER
+   ===================================================== */
+
+.share-card__footer {
+  margin: 24px 0 0;
+
+  color: #211a1d;
+
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+/* =====================================================
+   FOOTER
+   ===================================================== */
+
+.results-footer {
+  position: relative;
+
+  z-index: 2;
+
+  width: min(1280px, 100%);
+
+  margin: 20px auto 0;
+
+  color: #211a1d;
+
+  font-size: 13px;
+
+  animation:
+    voteFadeUp 0.8s 0.6s ease-out both;
+}
+
+/* =====================================================
+   ANIMATIONS
+   ===================================================== */
+
+@keyframes navbarEnter {
+  from {
+    opacity: 0;
+    transform: translateY(-18px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes headerEnter {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes resultsCardEnter {
+  from {
+    opacity: 0;
+    transform: translateY(35px) scale(0.98);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes shareCardEnter {
+  from {
+    opacity: 0;
+    transform: translateX(28px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes selectedResultEnter {
+  from {
+    opacity: 0;
+    transform: scale(0.97);
+  }
+
+  70% {
+    transform: scale(1.015);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes votedPop {
+  0% {
+    opacity: 0;
+    transform: scale(0.7);
+  }
+
+  70% {
+    transform: scale(1.08);
+  }
+
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes barGrow {
+  from {
+    transform: scaleX(0);
+  }
+
+  to {
+    transform: scaleX(1);
+  }
+}
+
+@keyframes decorationFloat {
+  0%,
+  100% {
+    transform: translate(0, 0);
+  }
+
+  50% {
+    transform: translate(-12px, 12px);
+  }
+}
+
+@keyframes decorationFloatReverse {
+  0%,
+  100% {
+    transform: translate(0, 0);
+  }
+
+  50% {
+    transform: translate(12px, -10px);
+  }
+}
+
+@keyframes voteFadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* =====================================================
+   TABLET
+   ===================================================== */
+
+@media (max-width: 1050px) {
+  .results-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .share-card {
+    min-height: auto;
+  }
+
+  .results-footer {
+    margin-top: 20px;
+  }
+}
+
+/* =====================================================
+   MOBILE
+   ===================================================== */
+
+@media (max-width: 700px) {
+  .results-page {
+    padding: 14px 16px 40px;
+  }
+
+  .results-navbar {
+    height: 64px;
+
+    padding: 0 18px;
+
+    border-radius: 20px;
+  }
+
+  .results-navbar__brand {
+    font-size: 16px;
+  }
+
+  .results-navbar__links {
+    gap: 12px;
+  }
+
+  .results-navbar__active {
+    display: none;
+  }
+
+  .results-navbar__signin {
+    display: none;
+  }
+
+  .results-navbar__create {
+    width: 105px;
+    height: 42px;
+
+    font-size: 12px;
+  }
+
+  .results-header {
+    margin: 45px 4px 28px;
+  }
+
+  .results-header__eyebrow {
+    font-size: 11px;
+  }
+
+  .results-header h1 {
+    font-size: 36px;
+    line-height: 1.05;
+  }
+
+  .results-header > p:last-child {
+    font-size: 15px;
+  }
+
+  .results-layout {
+    gap: 20px;
+  }
+
+  .results-card {
+    min-height: auto;
+
+    padding: 24px 20px;
+
+    border-radius: 24px;
+  }
+
+  .results-card h2 {
+    font-size: 23px;
+  }
+
+  .result-option__name {
+    font-size: 14px;
+  }
+
+  .result-option__percentage {
+    font-size: 14px;
+  }
+
+  .result-option__voted {
+    display: none;
+  }
+
+  .share-card {
+    padding: 26px 20px;
+
+    border-radius: 24px;
+  }
+
+  .share-card h2 {
+    font-size: 27px;
+  }
+
+  .results-decoration--coral {
+    width: 190px;
+    height: 190px;
+
+    top: -100px;
+    right: -70px;
+  }
+
+  .results-decoration--purple {
+    width: 160px;
+    height: 160px;
+
+    left: -100px;
+    bottom: -90px;
+  }
+}
+
+/* =====================================================
+   REDUCED MOTION
+   ===================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

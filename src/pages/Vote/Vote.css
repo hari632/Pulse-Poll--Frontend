@@ -1,0 +1,1025 @@
+/* =========================================================
+   PULSEPOLL
+   VOTE — CORAL POP
+   ========================================================= */
+
+.vote-page {
+  min-height: 100vh;
+
+  padding: 28px 40px 70px;
+
+  background: #fff6f7;
+  color: #211a1d;
+
+  overflow-x: hidden;
+}
+
+/* =========================================================
+   NAVBAR
+   ========================================================= */
+
+.vote-navbar {
+  position: relative;
+
+  width: 100%;
+  height: 76px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 0 28px;
+
+  background: #ffffff;
+
+  border-radius: 26px;
+
+  box-shadow:
+    0 12px 35px rgba(33, 26, 29, 0.06);
+
+  animation: voteNavEnter 0.6s ease-out both;
+}
+
+.vote-navbar__brand {
+  color: #211a1d;
+
+  font-size: 16px;
+  font-weight: 600;
+
+  transition:
+    transform 0.2s ease,
+    opacity 0.2s ease;
+}
+
+.vote-navbar__brand:hover {
+  transform: translateX(3px);
+  opacity: 0.7;
+}
+
+.vote-navbar__live {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+
+  color: #ff4f70;
+
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.vote-navbar__dot {
+  width: 7px;
+  height: 7px;
+
+  border-radius: 50%;
+
+  background: #ff4f70;
+
+  animation: livePulse 1.5s ease-in-out infinite;
+}
+
+/* =========================================================
+   INTRO
+   ========================================================= */
+
+.vote-intro {
+  width: min(820px, 100%);
+
+  margin: 66px auto 38px;
+
+  animation: voteFadeUp 0.7s 0.1s ease-out both;
+}
+
+.vote-live-badge {
+  width: fit-content;
+
+  display: flex;
+  align-items: center;
+  gap: 6px;
+
+  height: 32px;
+
+  padding: 0 16px;
+
+  border-radius: 16px;
+
+  background: #6c63ff;
+  color: #ffffff;
+
+  font-size: 11px;
+  font-weight: 600;
+
+  animation:
+    badgeEnter 0.6s 0.15s ease-out both,
+    badgeFloat 3s 1s ease-in-out infinite;
+}
+
+.vote-live-badge span {
+  font-size: 8px;
+
+  animation: livePulse 1.4s ease-in-out infinite;
+}
+
+.vote-intro h1 {
+  max-width: 720px;
+
+  margin: 20px 0 12px;
+
+  font-size: 42px;
+  line-height: 46px;
+
+  font-weight: 600;
+
+  letter-spacing: -1.3px;
+
+  animation: questionEnter 0.7s 0.2s ease-out both;
+}
+
+.vote-intro > p {
+  margin: 0;
+
+  color: #66595e;
+
+  font-size: 15px;
+
+  animation: voteFadeUp 0.7s 0.3s ease-out both;
+}
+
+/* =========================================================
+   MAIN LAYOUT
+   ========================================================= */
+
+.vote-layout {
+  width: min(1168px, 100%);
+
+  margin: 0 auto;
+
+  display: grid;
+
+  grid-template-columns:
+    minmax(0, 820px)
+    minmax(300px, 380px);
+
+  gap: 48px;
+
+  align-items: start;
+}
+
+/* =========================================================
+   VOTING CARD
+   ========================================================= */
+
+.voting-card {
+  min-height: 470px;
+
+  padding: 64px 50px 40px;
+
+  background: #ffffff;
+
+  border-radius: 28px;
+
+  box-shadow:
+    0 20px 50px rgba(33, 26, 29, 0.05);
+
+  animation:
+    cardEnter 0.8s 0.25s
+    cubic-bezier(0.22, 1, 0.36, 1)
+    both;
+}
+
+.voting-card__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  margin-bottom: 18px;
+
+  color: #a1979b;
+
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.7px;
+}
+
+.voting-card__header span:last-child {
+  color: #6c63ff;
+}
+
+/* =========================================================
+   VOTE OPTIONS
+   ========================================================= */
+
+.vote-options {
+  display: flex;
+  flex-direction: column;
+
+  gap: 14px;
+}
+
+.vote-option {
+  position: relative;
+
+  width: 100%;
+  min-height: 64px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 0 20px;
+
+  border: 2px solid transparent;
+  border-radius: 18px;
+
+  background: #fff9f9;
+
+  color: #211a1d;
+
+  cursor: pointer;
+
+  text-align: left;
+
+  transition:
+    transform 0.22s ease,
+    border-color 0.22s ease,
+    background 0.22s ease,
+    box-shadow 0.22s ease;
+}
+
+.vote-option:hover:not(:disabled) {
+  transform: translateX(5px);
+
+  background: #fff5f6;
+
+  box-shadow:
+    0 8px 20px rgba(33, 26, 29, 0.06);
+}
+
+.vote-option:active:not(:disabled) {
+  transform: scale(0.985);
+}
+
+.vote-option--selected {
+  border-color: #ff6617;
+
+  background: #fff9f9;
+
+  box-shadow:
+    0 8px 25px rgba(255, 102, 23, 0.1);
+
+  animation: optionSelected 0.3s ease-out;
+}
+
+.vote-option:disabled {
+  cursor: default;
+}
+
+.vote-option__left {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+
+  min-width: 0;
+}
+
+.vote-option__radio {
+  width: 22px;
+  height: 22px;
+
+  flex: 0 0 22px;
+
+  display: grid;
+  place-items: center;
+
+  border: 2px solid #ded5d8;
+
+  border-radius: 50%;
+
+  background: #ffffff;
+
+  transition:
+    border-color 0.2s ease,
+    background 0.2s ease,
+    transform 0.2s ease;
+}
+
+.vote-option__radio--selected {
+  border-color: #ff4f70;
+
+  background: #ff4f70;
+
+  transform: scale(1.08);
+}
+
+.vote-option__check {
+  color: #ffffff;
+
+  font-size: 12px;
+  font-weight: 800;
+
+  animation: checkPop 0.25s ease-out;
+}
+
+.vote-option__name {
+  overflow: hidden;
+
+  text-overflow: ellipsis;
+
+  white-space: nowrap;
+
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.vote-option__percentage {
+  color: #66595e;
+
+  font-size: 14px;
+
+  flex-shrink: 0;
+
+  transition:
+    color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.vote-option--selected
+  .vote-option__percentage {
+  color: #ff4f70;
+
+  font-weight: 700;
+
+  transform: scale(1.05);
+}
+
+/* =========================================================
+   CAST VOTE BUTTON
+   ========================================================= */
+
+.cast-vote-button {
+  width: 180px;
+  height: 52px;
+
+  margin-top: 26px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+
+  border: 0;
+  border-radius: 18px;
+
+  background: #ff4f70;
+  color: #ffffff;
+
+  font-size: 14px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  box-shadow:
+    0 10px 25px rgba(255, 79, 112, 0.2);
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    opacity 0.2s ease;
+}
+
+.cast-vote-button:hover:not(:disabled) {
+  transform: translateY(-3px);
+
+  box-shadow:
+    0 15px 30px rgba(255, 79, 112, 0.28);
+}
+
+.cast-vote-button:active:not(:disabled) {
+  transform: translateY(0) scale(0.97);
+}
+
+.cast-vote-button--disabled,
+.cast-vote-button:disabled {
+  cursor: not-allowed;
+
+  opacity: 0.5;
+
+  box-shadow: none;
+}
+
+/* =========================================================
+   BUTTON SPINNER
+   ========================================================= */
+
+.button-spinner {
+  width: 15px;
+  height: 15px;
+
+  border: 2px solid rgba(255, 255, 255, 0.4);
+  border-top-color: #ffffff;
+
+  border-radius: 50%;
+
+  animation: spin 0.7s linear infinite;
+}
+
+/* =========================================================
+   SUBMITTED STATE
+   ========================================================= */
+
+.vote-submitted {
+  min-height: 70px;
+
+  margin-top: 24px;
+
+  padding: 12px 14px;
+
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  border-radius: 16px;
+
+  background: #f7f3ff;
+
+  animation: submittedEnter 0.5s
+    cubic-bezier(0.22, 1, 0.36, 1)
+    both;
+}
+
+.vote-submitted__icon {
+  width: 38px;
+  height: 38px;
+
+  flex: 0 0 38px;
+
+  display: grid;
+  place-items: center;
+
+  border-radius: 50%;
+
+  background: #6c63ff;
+
+  color: #ffffff;
+
+  font-size: 17px;
+  font-weight: 800;
+
+  animation: checkPop 0.4s ease-out;
+}
+
+.vote-submitted strong {
+  display: block;
+
+  font-size: 13px;
+}
+
+.vote-submitted p {
+  margin: 3px 0 0;
+
+  color: #66595e;
+
+  font-size: 11px;
+}
+
+.vote-submitted button {
+  margin-left: auto;
+
+  border: 0;
+
+  background: transparent;
+
+  color: #6c63ff;
+
+  font-size: 12px;
+  font-weight: 700;
+
+  cursor: pointer;
+
+  white-space: nowrap;
+
+  transition: transform 0.2s ease;
+}
+
+.vote-submitted button:hover {
+  transform: translateX(3px);
+}
+
+/* =========================================================
+   LIVE RESULTS
+   ========================================================= */
+
+.live-results {
+  min-height: 600px;
+
+  padding: 30px;
+
+  background: #ffffff;
+
+  border-radius: 28px;
+
+  box-shadow:
+    0 20px 50px rgba(33, 26, 29, 0.05);
+
+  animation:
+    resultsEnter 0.8s 0.4s
+    cubic-bezier(0.22, 1, 0.36, 1)
+    both;
+}
+
+.live-results__label {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+
+  color: #ff4f70;
+
+  font-size: 11px;
+  font-weight: 600;
+
+  letter-spacing: 0.2px;
+}
+
+.live-results__dot {
+  width: 7px;
+  height: 7px;
+
+  border-radius: 50%;
+
+  background: #ff4f70;
+
+  animation: livePulse 1.5s ease-in-out infinite;
+}
+
+.live-results h2 {
+  margin: 20px 0 6px;
+
+  font-size: 24px;
+  line-height: 1.2;
+
+  font-weight: 600;
+  letter-spacing: -0.5px;
+}
+
+.live-results__count {
+  color: #6c63ff;
+
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.live-results__description {
+  margin: 7px 0 28px;
+
+  color: #66595e;
+
+  font-size: 13px;
+}
+
+/* =========================================================
+   RESULT LIST
+   ========================================================= */
+
+.result-list {
+  display: flex;
+  flex-direction: column;
+
+  gap: 25px;
+}
+
+.result-item {
+  animation: resultItemEnter 0.5s ease-out both;
+}
+
+.result-item:nth-child(2) {
+  animation-delay: 0.08s;
+}
+
+.result-item:nth-child(3) {
+  animation-delay: 0.16s;
+}
+
+.result-item:nth-child(4) {
+  animation-delay: 0.24s;
+}
+
+.result-item--selected {
+  transform: scale(1.01);
+}
+
+.result-item__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  margin-bottom: 9px;
+}
+
+.result-item__header strong {
+  color: #211a1d;
+
+  font-size: 13px;
+}
+
+.result-item__header span {
+  color: #66595e;
+
+  font-size: 12px;
+}
+
+.result-track {
+  width: 100%;
+  height: 12px;
+
+  overflow: hidden;
+
+  border-radius: 6px;
+
+  background: #f2edde;
+}
+
+.result-fill {
+  height: 100%;
+
+  min-width: 0;
+
+  border-radius: inherit;
+
+  background: #ff4f70;
+
+  transform-origin: left;
+
+  transition:
+    width 0.8s
+    cubic-bezier(0.22, 1, 0.36, 1);
+
+  animation: resultGrow 1s
+    cubic-bezier(0.22, 1, 0.36, 1)
+    both;
+}
+
+.result-fill--purple {
+  background: #6c63ff;
+}
+
+.result-fill--green {
+  background: #b0e024;
+}
+
+/* =========================================================
+   RESULTS FOOTER
+   ========================================================= */
+
+.live-results__divider {
+  width: 100%;
+  height: 1px;
+
+  margin: 58px 0 18px;
+
+  background: #ebe3e5;
+}
+
+.live-results__activity {
+  margin: 0;
+
+  color: #66595e;
+
+  font-size: 12px;
+}
+
+.live-results__activity span {
+  color: #66595e;
+
+  animation: livePulse 2s ease-in-out infinite;
+}
+
+/* =========================================================
+   ANIMATIONS
+   ========================================================= */
+
+@keyframes voteNavEnter {
+  from {
+    opacity: 0;
+    transform: translateY(-16px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes voteFadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes questionEnter {
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.98);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes badgeEnter {
+  from {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes badgeFloat {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-3px);
+  }
+}
+
+@keyframes cardEnter {
+  from {
+    opacity: 0;
+    transform: translateY(30px) scale(0.98);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes resultsEnter {
+  from {
+    opacity: 0;
+    transform: translateX(25px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes optionSelected {
+  0% {
+    transform: scale(0.98);
+  }
+
+  70% {
+    transform: scale(1.015);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes checkPop {
+  0% {
+    opacity: 0;
+    transform: scale(0.4);
+  }
+
+  70% {
+    transform: scale(1.2);
+  }
+
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes submittedEnter {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes resultItemEnter {
+  from {
+    opacity: 0;
+    transform: translateX(8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes resultGrow {
+  from {
+    transform: scaleX(0);
+  }
+
+  to {
+    transform: scaleX(1);
+  }
+}
+
+@keyframes livePulse {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  50% {
+    opacity: 0.4;
+    transform: scale(0.7);
+  }
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* =========================================================
+   TABLET
+   ========================================================= */
+
+@media (max-width: 1100px) {
+  .vote-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .live-results {
+    min-height: auto;
+  }
+
+  .result-list {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 25px;
+  }
+
+  .live-results__divider {
+    margin-top: 35px;
+  }
+}
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 700px) {
+  .vote-page {
+    padding: 12px 16px 40px;
+  }
+
+  .vote-navbar {
+    height: 64px;
+
+    padding: 0 20px;
+
+    border-radius: 20px;
+  }
+
+  .vote-navbar__brand {
+    font-size: 15px;
+  }
+
+  .vote-navbar__live {
+    font-size: 10px;
+  }
+
+  .vote-intro {
+    margin: 45px 4px 30px;
+  }
+
+  .vote-intro h1 {
+    font-size: 34px;
+    line-height: 38px;
+  }
+
+  .vote-intro > p {
+    font-size: 14px;
+    line-height: 1.5;
+  }
+
+  .voting-card {
+    min-height: auto;
+
+    padding: 30px 20px;
+
+    border-radius: 24px;
+  }
+
+  .vote-option {
+    min-height: 60px;
+
+    padding: 0 15px;
+
+    border-radius: 15px;
+  }
+
+  .vote-option__name {
+    font-size: 14px;
+  }
+
+  .vote-option__percentage {
+    font-size: 12px;
+  }
+
+  .cast-vote-button {
+    width: 100%;
+  }
+
+  .vote-submitted {
+    align-items: flex-start;
+
+    flex-wrap: wrap;
+  }
+
+  .vote-submitted button {
+    width: 100%;
+
+    margin-left: 0;
+    margin-top: 5px;
+
+    text-align: left;
+  }
+
+  .live-results {
+    padding: 24px 20px;
+
+    border-radius: 24px;
+  }
+
+  .result-list {
+    display: flex;
+    flex-direction: column;
+
+    gap: 22px;
+  }
+}
+
+/* =========================================================
+   REDUCED MOTION
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+.vote-loading-card,
+.vote-error-card {
+  min-height: 280px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.vote-loading-card p {
+  margin: 0;
+  color: var(--color-text-muted);
+  font-weight: 600;
+}
+
+.vote-error-card .vote-error {
+  margin: 0 0 8px;
+  text-align: center;
+}
+
+.vote-error-card .cast-vote-button {
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}

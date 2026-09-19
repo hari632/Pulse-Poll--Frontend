@@ -1,0 +1,729 @@
+.poll-not-found {
+  position: relative;
+  isolation: isolate;
+
+  min-height: 100vh;
+  min-height: 900px;
+
+  overflow: hidden;
+
+  background: #fff6f7;
+  color: #211a1d;
+}
+
+/* =========================================
+   DECORATION
+========================================= */
+
+.poll-not-found__blob {
+  position: absolute;
+  z-index: 0;
+
+  pointer-events: none;
+
+  border-radius: 50%;
+}
+
+.poll-not-found__blob--top {
+  width: 300px;
+  height: 300px;
+
+  top: 140px;
+  right: 100px;
+
+  background: #ff4f70;
+
+  animation:
+    notFoundDecorIn 850ms 200ms
+      cubic-bezier(0.16, 1, 0.3, 1) both,
+    notFoundFloat 8s 1s ease-in-out infinite;
+}
+
+.poll-not-found__blob--bottom {
+  width: 250px;
+  height: 250px;
+
+  left: 120px;
+  bottom: 30px;
+
+  background: #6c63ff;
+
+  animation:
+    notFoundDecorIn 850ms 400ms
+      cubic-bezier(0.16, 1, 0.3, 1) both,
+    notFoundFloatReverse 9s 1.3s ease-in-out infinite;
+}
+
+.poll-not-found__dot {
+  position: absolute;
+  z-index: 1;
+
+  border-radius: 50%;
+
+  pointer-events: none;
+}
+
+.poll-not-found__dot--coral {
+  width: 18px;
+  height: 18px;
+
+  top: 150px;
+  left: 88px;
+
+  background: #ff4f70;
+
+  animation:
+    dotNotFoundIn 500ms 500ms ease both,
+    tinyNotFoundFloat 4s 1s ease-in-out infinite;
+}
+
+.poll-not-found__dot--purple {
+  width: 12px;
+  height: 12px;
+
+  top: 180px;
+  right: 98px;
+
+  background: #6c63ff;
+
+  animation:
+    dotNotFoundIn 500ms 650ms ease both,
+    tinyNotFoundFloat 4.5s 1.2s ease-in-out infinite;
+}
+
+/* =========================================
+   NAVBAR
+========================================= */
+
+.poll-not-found__navbar {
+  position: relative;
+  z-index: 10;
+
+  width: calc(100% - 80px);
+  height: 76px;
+
+  margin: 28px auto 0;
+  padding: 0 26px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  border-radius: 26px;
+
+  background: #ff4f70;
+
+  box-shadow:
+    0 15px 35px rgba(255, 79, 112, 0.13);
+
+  animation:
+    navbarNotFoundIn 700ms
+      cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.poll-not-found__brand {
+  color: #211a1d;
+
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: -0.7px;
+
+  transition:
+    transform 180ms ease,
+    color 180ms ease;
+}
+
+.poll-not-found__brand:hover {
+  color: #fff;
+
+  transform: translateY(-2px);
+}
+
+.poll-not-found__navbar nav {
+  display: flex;
+  align-items: center;
+  gap: 25px;
+}
+
+.poll-not-found__navbar nav a {
+  color: #211a1d;
+
+  font-size: 14px;
+  font-weight: 600;
+
+  transition:
+    transform 180ms ease,
+    color 180ms ease;
+}
+
+.poll-not-found__navbar nav a:hover {
+  color: #fff;
+  transform: translateY(-2px);
+}
+
+.poll-not-found__navbar .poll-not-found__create {
+  width: 112px;
+  height: 44px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 22px;
+
+  background: #ff4f70;
+  color: #fff;
+
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.22);
+
+  transition:
+    transform 180ms ease,
+    box-shadow 180ms ease;
+}
+
+.poll-not-found__navbar .poll-not-found__create:hover {
+  color: #fff;
+
+  transform: translateY(-3px);
+
+  box-shadow:
+    0 8px 18px rgba(33, 26, 29, 0.12);
+}
+
+/* =========================================
+   MAIN CARD
+========================================= */
+
+.poll-not-found__card {
+  position: relative;
+  z-index: 5;
+
+  width: min(600px, calc(100% - 40px));
+
+  min-height: 570px;
+
+  margin: 86px auto 70px;
+  padding: 50px 40px 38px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  text-align: center;
+
+  border-radius: 32px;
+
+  background: #ff4f70;
+
+  box-shadow:
+    0 28px 60px rgba(255, 79, 112, 0.15);
+
+  animation:
+    notFoundCardIn 850ms 250ms
+      cubic-bezier(0.16, 1, 0.3, 1) both;
+
+  transition:
+    transform 300ms ease,
+    box-shadow 300ms ease;
+}
+
+.poll-not-found__card:hover {
+  transform: translateY(-4px);
+
+  box-shadow:
+    0 35px 70px rgba(255, 79, 112, 0.2);
+}
+
+/* =========================================
+   QUESTION ICON
+========================================= */
+
+.poll-not-found__icon {
+  width: 110px;
+  height: 110px;
+
+  display: grid;
+  place-items: center;
+
+  border-radius: 50%;
+
+  background: #fff;
+
+  animation:
+    questionIconIn 850ms 550ms
+      cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+
+.poll-not-found__icon-inner {
+  width: 78px;
+  height: 78px;
+
+  display: grid;
+  place-items: center;
+
+  border-radius: 50%;
+
+  background: #fff;
+
+  color: #ff4f70;
+
+  font-size: 52px;
+  line-height: 1;
+  font-weight: 800;
+
+  box-shadow:
+    0 8px 20px rgba(33, 26, 29, 0.08);
+
+  animation:
+    questionPulse 2.8s 1.3s ease-in-out infinite;
+}
+
+/* =========================================
+   TEXT
+========================================= */
+
+.poll-not-found__eyebrow {
+  margin: 27px 0 0;
+
+  color: #fff;
+
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+
+  animation:
+    notFoundTextIn 650ms 800ms
+      cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.poll-not-found__card h1 {
+  margin: 17px 0 0;
+
+  color: #211a1d;
+
+  font-size: 40px;
+  line-height: 1.1;
+  font-weight: 800;
+  letter-spacing: -1.5px;
+
+  animation:
+    notFoundTextIn 700ms 900ms
+      cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.poll-not-found__description {
+  margin: 19px 0 0;
+
+  color: #6b6265;
+
+  font-size: 17px;
+  line-height: 1.45;
+
+  animation:
+    notFoundTextIn 650ms 1s
+      cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+/* =========================================
+   TRY BUTTON
+========================================= */
+
+.poll-not-found__try {
+  width: 390px;
+  max-width: 100%;
+  height: 62px;
+
+  margin-top: 50px;
+  padding: 0 24px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  border: 0;
+  border-radius: 18px;
+
+  background: #fff;
+
+  color: #9a8e91;
+
+  font-size: 16px;
+  font-weight: 400;
+
+  box-shadow:
+    0 8px 20px rgba(33, 26, 29, 0.06);
+
+  cursor: pointer;
+
+  animation:
+    actionNotFoundIn 650ms 1.15s
+      cubic-bezier(0.16, 1, 0.3, 1) both;
+
+  transition:
+    transform 200ms ease,
+    box-shadow 200ms ease,
+    color 200ms ease;
+}
+
+.poll-not-found__try:hover {
+  color: #211a1d;
+
+  transform: translateY(-3px);
+
+  box-shadow:
+    0 13px 25px rgba(33, 26, 29, 0.1);
+}
+
+.poll-not-found__try:active {
+  transform: translateY(1px);
+}
+
+.poll-not-found__arrow {
+  color: #ff4f70;
+
+  font-size: 22px;
+  font-weight: 700;
+
+  opacity: 0;
+
+  transform: translateX(-8px);
+
+  transition:
+    opacity 180ms ease,
+    transform 180ms ease;
+}
+
+.poll-not-found__try:hover
+  .poll-not-found__arrow {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* =========================================
+   BACK BUTTON
+========================================= */
+
+.poll-not-found__back {
+  width: 390px;
+  max-width: 100%;
+  height: 58px;
+
+  margin-top: 20px;
+
+  border: 0;
+  border-radius: 18px;
+
+  background: #ff4f70;
+  color: #fff;
+
+  font-size: 16px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.25);
+
+  animation:
+    actionNotFoundIn 650ms 1.3s
+      cubic-bezier(0.16, 1, 0.3, 1) both;
+
+  transition:
+    transform 180ms ease,
+    background 180ms ease,
+    box-shadow 180ms ease;
+}
+
+.poll-not-found__back:hover {
+  background: #e95768;
+
+  transform: translateY(-3px);
+
+  box-shadow:
+    0 10px 20px rgba(33, 26, 29, 0.1);
+}
+
+.poll-not-found__back:active {
+  transform: translateY(1px);
+}
+
+/* =========================================
+   FOOTER
+========================================= */
+
+.poll-not-found__footer {
+  margin: 25px 0 0;
+
+  color: #8b7d81;
+
+  font-size: 13px;
+
+  animation:
+    notFoundTextIn 600ms 1.4s
+      cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+/* =========================================
+   ANIMATIONS
+========================================= */
+
+@keyframes navbarNotFoundIn {
+  from {
+    opacity: 0;
+    transform: translateY(-18px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes notFoundCardIn {
+  from {
+    opacity: 0;
+    transform: translateY(45px) scale(0.96);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes questionIconIn {
+  from {
+    opacity: 0;
+    transform: scale(0) rotate(-18deg);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1) rotate(0);
+  }
+}
+
+@keyframes questionPulse {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.06);
+  }
+}
+
+@keyframes notFoundTextIn {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes actionNotFoundIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes notFoundDecorIn {
+  from {
+    opacity: 0;
+    transform: scale(0.65);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes notFoundFloat {
+  0%,
+  100% {
+    transform: translate(0, 0);
+  }
+
+  50% {
+    transform: translate(-15px, 14px);
+  }
+}
+
+@keyframes notFoundFloatReverse {
+  0%,
+  100% {
+    transform: translate(0, 0);
+  }
+
+  50% {
+    transform: translate(14px, -12px);
+  }
+}
+
+@keyframes dotNotFoundIn {
+  from {
+    opacity: 0;
+    transform: scale(0);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes tinyNotFoundFloat {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-9px);
+  }
+}
+
+/* =========================================
+   RESPONSIVE
+========================================= */
+
+@media (max-width: 800px) {
+  .poll-not-found {
+    min-height: 100vh;
+  }
+
+  .poll-not-found__navbar {
+    width: calc(100% - 32px);
+
+    height: 64px;
+
+    margin-top: 16px;
+    padding: 0 20px;
+
+    border-radius: 20px;
+  }
+
+  .poll-not-found__brand {
+    font-size: 18px;
+  }
+
+  .poll-not-found__navbar nav {
+    gap: 10px;
+  }
+
+  .poll-not-found__navbar nav > a:first-child {
+    display: none;
+  }
+
+  .poll-not-found__navbar .poll-not-found__create {
+    width: 100px;
+    height: 40px;
+
+    font-size: 12px;
+  }
+
+  .poll-not-found__card {
+    width: calc(100% - 32px);
+
+    min-height: auto;
+
+    margin-top: 50px;
+    margin-bottom: 45px;
+
+    padding: 38px 22px 30px;
+
+    border-radius: 26px;
+  }
+
+  .poll-not-found__icon {
+    width: 90px;
+    height: 90px;
+  }
+
+  .poll-not-found__icon-inner {
+    width: 65px;
+    height: 65px;
+
+    font-size: 44px;
+  }
+
+  .poll-not-found__card h1 {
+    font-size: 32px;
+  }
+
+  .poll-not-found__description {
+    font-size: 15px;
+  }
+
+  .poll-not-found__desktop-break {
+    display: none;
+  }
+
+  .poll-not-found__try {
+    margin-top: 38px;
+  }
+
+  .poll-not-found__blob--top {
+    width: 180px;
+    height: 180px;
+
+    top: 120px;
+    right: -90px;
+  }
+
+  .poll-not-found__blob--bottom {
+    width: 160px;
+    height: 160px;
+
+    left: -80px;
+    bottom: -30px;
+  }
+}
+
+@media (max-width: 440px) {
+  .poll-not-found__brand {
+    font-size: 16px;
+  }
+
+  .poll-not-found__card {
+    width: calc(100% - 24px);
+
+    padding-inline: 18px;
+  }
+
+  .poll-not-found__card h1 {
+    font-size: 28px;
+  }
+
+  .poll-not-found__description {
+    max-width: 300px;
+  }
+
+  .poll-not-found__try,
+  .poll-not-found__back {
+    width: 100%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .poll-not-found *,
+  .poll-not-found *::before,
+  .poll-not-found *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
